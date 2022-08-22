@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  dev:
+    container_name: aee_digital_logger
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229
+    networks:
+      - aee_digital_backend
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  prod:
+    container_name: aee_digital_logger
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229
+    networks:
+      - aee_digital_backend
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+networks:
+  aee_digital_backend:
